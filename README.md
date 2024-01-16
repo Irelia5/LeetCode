@@ -1,2 +1,2 @@
 # LeetCode
- 刷LeetCode啦
+ 刷LeetCode
