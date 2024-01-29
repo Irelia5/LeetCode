@@ -38,6 +38,18 @@ using namespace std;
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        ListNode* cur = head;
+        while (cur) {
+            ListNode* nxt = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = nxt;
+        }
+        return pre;
+    }
+
+    ListNode* reverseList2(ListNode* head) {
         if (!head || !head->next) return head;
         ListNode* node = reverseList(head->next);
         head->next->next = head;
