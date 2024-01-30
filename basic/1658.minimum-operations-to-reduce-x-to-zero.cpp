@@ -1,6 +1,6 @@
 /*
  * @lc app=leetcode.cn id=1658 lang=cpp
- * @lcpr version=30113
+ * @lcpr version=30114
  *
  * [1658] 将 x 减到 0 的最小操作数
  */
@@ -28,22 +28,23 @@ using namespace std;
 class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
-        // 问题的核心是逆向思维
-        // 将问题转换为：寻找和为 s - x 的最长子串
-        int ans = -1;
-        int s = 0;
-        for (auto num : nums) {
-            s += num;
-        }
-        int target = s - x;
-        if (target < 0) return -1;
+        // 将问题转化为找最长子串, 满足字串和为 sum - x
+        // 因为子串可能不存在, 初始result = -1
+        int max_len = -1;
         int sum = 0;
-        for (int left = 0, right = 0; right < nums.size(); ++right) {
-            sum += nums[right];
-            while (sum > target) sum -= nums[left++];
-            if (sum == target) ans = max(ans, right - left + 1);
+        std::for_each(nums.begin(), nums.end(), [&sum](const auto n) {
+            sum += n;
+        });
+        int target = sum - x;
+        int s = 0;
+        int n = nums.size();
+        for (int left = 0, right = 0; right < n; ++right) {
+            s += nums[right];
+            // nums元素均大于0(该场景使用滑动窗口的前置条件)
+            while (s > target && left <= right) s -= nums[left++];
+            if (s == target) max_len = max(max_len, right - left + 1);
         }
-        return ans == -1 ? -1 : nums.size() - ans;
+        return max_len == -1 ? -1 : n - max_len;
     }
 };
 // @lc code=end
