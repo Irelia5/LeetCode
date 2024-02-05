@@ -53,7 +53,7 @@ public:
     }
 };
 
-class Solution {
+class Solution2 {
 public:
     // pre-order-traversal
     bool isValidBST(TreeNode* root) {
@@ -64,6 +64,22 @@ public:
     }
 private:
     long _pre_val = LONG_MIN;
+};
+
+class Solution {
+public:
+    // post-order-traversal
+    bool isValidBST(TreeNode* root) {
+        return isValidBSTPost(root).second != LONG_MAX;
+    }
+    pair<long, long> isValidBSTPost(TreeNode* root) {
+        if (!root) return {LONG_MAX, LONG_MIN};
+        auto [l_min, l_max] = isValidBSTPost(root->left);
+        auto [r_min, r_max] = isValidBSTPost(root->right);
+        long x = root->val;
+        if (x <= l_max || x >= r_min) return {LONG_MIN, LONG_MAX};
+        return {min(x, l_min), max(x, r_max)};
+    }
 };
 // @lc code=end
 
