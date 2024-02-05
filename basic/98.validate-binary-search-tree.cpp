@@ -36,7 +36,7 @@ using namespace std;
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution1 {
 public:
     // pre-order-traversal
     bool isValidBST(TreeNode* root) {
@@ -51,6 +51,19 @@ public:
                && isValidBSTPre(root->left, left, x)
                && isValidBSTPre(root->right, x, right);
     }
+};
+
+class Solution {
+public:
+    // pre-order-traversal
+    bool isValidBST(TreeNode* root) {
+        if (!root) return true;
+        if (!isValidBST(root->left) || root->val <= _pre_val) return false;
+        _pre_val = root->val;
+        return isValidBST(root->right);
+    }
+private:
+    long _pre_val = LONG_MIN;
 };
 // @lc code=end
 
