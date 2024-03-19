@@ -38,6 +38,7 @@ using namespace std;
  */
 class Solution {
 public:
+    // 也可以用左视图的最下节点
     int findBottomLeftValue(TreeNode* root) {
         queue<TreeNode*> q;
         vector<int> vals;
