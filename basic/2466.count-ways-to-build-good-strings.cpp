@@ -27,6 +27,7 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
+    // 做这个题我犯的错是直接写该问题的解, 而不是拆解该问题
     // 回溯 超时
     int countGoodStrings1(int low, int high, int zero, int one) {
         int mod = 1000000007;
@@ -52,7 +53,7 @@ public:
     }
     // 用上面的回溯似乎很难转化为递推, 不如用爬楼梯的思路来考虑
     // 递推
-    int countGoodStrings(int low, int high, int zero, int one) {
+    int countGoodStrings3(int low, int high, int zero, int one) {
         int mod = 1e9 + 7;
         vector<int> f(high + 1, 0);
         f[0] = 1;
