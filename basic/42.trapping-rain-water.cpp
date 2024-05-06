@@ -48,6 +48,24 @@ public:
         }
         return ans;
     }
+
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int ans = 0;
+        stack<int> st;
+        for (int i = 0; i < n; ++i) {
+            int h = height[i];
+            while (!st.empty() && h > height[st.top()]) {
+                int pre = height[st.top()];
+                st.pop();
+                if (!st.empty()) {
+                    ans += (min(height[st.top()], h) - pre) * (i - st.top() - 1);
+                }
+            }
+            st.push(i);
+        }
+        return ans;
+    }
 };
 // @lc code=end
 
