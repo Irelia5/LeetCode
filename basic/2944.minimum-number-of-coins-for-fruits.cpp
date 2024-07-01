@@ -1,6 +1,6 @@
 /*
  * @lc app=leetcode.cn id=2944 lang=cpp
- * @lcpr version=30122
+ * @lcpr version=30204
  *
  * [2944] 购买水果需要的最少金币数
  */
@@ -27,14 +27,47 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
+    int minimumCoins1(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> memo((n + 1) / 2);
+        function<int(int)> dfs = [&] (int i) {
+            if (i >= (n + 1) / 2) return prices[i - 1];
+            int& res = memo[i];
+            if (res) return res;
+            res = INT_MAX;
+            for (int j = i + 1; j <= 2 * i + 1; j++) {
+                res = min(res, dfs(j));
+            }
+            res += prices[i - 1];
+            return res;
+        };
+        return dfs(1);
+    }
+
+    int minimumCoins2(vector<int>& prices) {
+        int n = prices.size();
+        for (int i = (n + 1) / 2 - 1; i >= 1; --i) {
+            prices[i - 1] = prices[i - 1] + *min_element(prices.begin() + i, prices.begin() + i * 2 + 1);
+        }
+        return prices[0];
+    }
+
     int minimumCoins(vector<int>& prices) {
         int n = prices.size();
-        function<int(int, int)> dfs = [&] (int i, int free) {
-            if (i == 0) return prices[i];
-            if (!free) return dfs(i - 1, 1);
-            return max(dfs(i - 1, 0), dfs(i - 1, 1));
-        };
-        return dfs(n - 1, 0);
+        deque<pair<int,int>> dq;
+        dq.emplace_back(n + 1, 0);
+        for (int i = n; i > 0; --i) {
+            while (dq.front().first > 2 * i + 1) {
+                dq.pop_front();
+            }
+            int f = prices[i - 1] + dq.front().second;
+            
+            while (dq.back().second >= f) {
+                dq.pop_back();
+            }
+            dq.emplace_back(i, f);
+        }
+        return dq.back().second;
     }
 };
 // @lc code=end
